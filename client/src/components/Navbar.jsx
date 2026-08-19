@@ -84,21 +84,46 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="mobile-menu">
-          <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
-          <Link to="/listings" onClick={() => setMenuOpen(false)}>Browse Land</Link>
-          <Link to="/list-land" onClick={() => setMenuOpen(false)}>+ List Land</Link>
-          {user ? (
-            <>
-              {user.role === 'admin' && <Link to="/admin" onClick={() => setMenuOpen(false)}>Admin Dashboard</Link>}
-              <button onClick={() => { handleLogout(); setMenuOpen(false); }}>Logout</button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
-              <Link to="/register" onClick={() => setMenuOpen(false)}>Register</Link>
-            </>
+        <div className="mobile-menu animate-fade-in">
+          {user && (
+            <div className="mobile-user-card">
+              <div className="avatar">{user.name[0].toUpperCase()}</div>
+              <div>
+                <strong className="mobile-user-name">{user.name}</strong>
+                <span className="mobile-user-role">{user.role === 'admin' ? 'Administrator' : 'Verified Member'}</span>
+              </div>
+            </div>
           )}
+
+          <div className="mobile-nav-links">
+            <NavLink to="/" end onClick={() => setMenuOpen(false)} className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}>
+              Home
+            </NavLink>
+            <NavLink to="/listings" onClick={() => setMenuOpen(false)} className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}>
+              Browse Land & Plots
+            </NavLink>
+            <Link to="/list-land" onClick={() => setMenuOpen(false)} className="btn btn-primary w-full mobile-list-btn">
+              + List Your Land Free
+            </Link>
+
+            {user ? (
+              <>
+                {user.role === 'admin' && (
+                  <NavLink to="/admin" onClick={() => setMenuOpen(false)} className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}>
+                    <FiSettings /> Admin Dashboard
+                  </NavLink>
+                )}
+                <button className="mobile-nav-item mobile-logout-btn" onClick={() => { handleLogout(); setMenuOpen(false); }}>
+                  <FiLogOut /> Logout
+                </button>
+              </>
+            ) : (
+              <div className="mobile-auth-grid">
+                <Link to="/login" className="btn btn-outline w-full" onClick={() => setMenuOpen(false)}>Login</Link>
+                <Link to="/register" className="btn btn-primary w-full" onClick={() => setMenuOpen(false)}>Register</Link>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </nav>

@@ -110,3 +110,11 @@
   font-weight: 800;
   color: var(--accent);
 }
+
+@media (max-width: 480px) {
+  .land-card__body { padding: 1rem; gap: 0.5rem; }
+  .land-card__title { font-size: 0.98rem; }
+  .land-card__price { font-size: 1.1rem; }
+  .land-card__stats { gap: 0.6rem; padding: 0.6rem 0; }
+  .stat { font-size: 0.78rem; }
+}

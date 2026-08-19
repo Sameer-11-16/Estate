@@ -74,3 +74,9 @@
   transition: all var(--transition);
 }
 .demo-btn:hover { border-color: var(--primary); color: var(--primary); background: #dcfce7; }
+
+@media (max-width: 480px) {
+  .auth-card { padding: 2rem 1.25rem; border-radius: var(--radius-lg); }
+  .auth-card h2 { font-size: 1.4rem; }
+  .demo-accounts { flex-direction: column; gap: 0.5rem; }
+}
