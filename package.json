@@ -4,6 +4,8 @@
   "description": "Premium MERN land listing platform",
   "main": "server/server.js",
   "scripts": {
+    "build": "npm run build --prefix client",
+    "vercel-build": "npm run build --prefix client",
     "server": "nodemon server/server.js",
     "client": "npm run dev --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",

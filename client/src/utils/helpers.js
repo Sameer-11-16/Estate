@@ -12,8 +12,9 @@ export const formatArea = (area, unit) => {
 
 export const getImageUrl = (path) => {
   if (!path) return 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800';
-  if (path.startsWith('http')) return path;
-  return `http://localhost:5000${path}`;
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  const backendBase = (import.meta.env.VITE_API_URL || '').replace(/\/api\/?$/, '');
+  return backendBase ? `${backendBase}${path}` : path;
 };
 
 export const getStatusColor = (status) => {

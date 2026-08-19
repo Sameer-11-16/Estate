@@ -3,10 +3,31 @@ const mongoose = require('mongoose');
 let mongoServer = null;
 
 const connectDB = async () => {
-  const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/landestate';
+  if (mongoose.connection.readyState >= 1) {
+    return mongoose.connection;
+  }
 
+  const uri = process.env.MONGO_URI;
+
+  if (uri) {
+    try {
+      const conn = await mongoose.connect(uri, {
+        serverSelectionTimeoutMS: 5000,
+      });
+      console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+      return conn;
+    } catch (err) {
+      console.error('❌ MongoDB Atlas connection error:', err.message);
+      if (process.env.NODE_ENV === 'production') {
+        throw err;
+      }
+    }
+  }
+
+  // Fallback to local MongoDB / in-memory for local development
+  const localUri = 'mongodb://localhost:27017/landestate';
   try {
-    const conn = await mongoose.connect(uri, {
+    const conn = await mongoose.connect(localUri, {
       serverSelectionTimeoutMS: 2000,
     });
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);

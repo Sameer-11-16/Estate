@@ -16,6 +16,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Middleware to ensure DB connection is ready for serverless & local
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -28,7 +38,7 @@ app.use('/api/upload', uploadRoutes);
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'OK', timestamp: new Date() }));
 
-// Connect to Database and start server
+// Connect to Database and start server locally
 const startServer = async () => {
   try {
     await connectDB();
@@ -41,4 +51,8 @@ const startServer = async () => {
   }
 };
 
-startServer();
+if (require.main === module || (!process.env.VERCEL && process.env.NODE_ENV !== 'test')) {
+  startServer();
+}
+
+module.exports = app;
